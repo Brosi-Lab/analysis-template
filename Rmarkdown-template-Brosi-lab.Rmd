@@ -18,11 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Preamble [*delete this when altering for your project!*]
 
-## report format
-
-* this template is set up specifically for `html` Rmarkdown reports (not `pdf`)
-
-## header
+## notes on the .Rmd header
 
 * the header of this Rmarkdown template file has been altered in several ways...
     + note that you will need to edit the header with the title, your name, and the start date of the project
@@ -38,12 +34,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## how to use this file
 
+* this template is set up specifically for `html` Rmarkdown reports (not `pdf`)
 * remember to replace (nearly) all of the text with text specific to your project
+* you can refer to the .Rmd file in https://github.com/Brosi-Lab/FINAL-snowmelt-seeds as a "model" of how to do this
 * you MUST name all code chunks with a unique name in order for your Rmarkdown file to knit to a report
 
 ## workspace / environment philosophy
 
-while you should *eventually* delete this text from your report, I suggest that you keep it around while you are coding, as a reminder to keep things streamlined and clean. Once an analysis gets to the very final stages (and assuming you have a clean workspace at that point!) you can delete.
+while you should *eventually* delete the text in this section from your report, I suggest that you keep it around while you are coding, as a reminder to keep things streamlined and clean. Once an analysis gets to the very final stages (and assuming you have a clean workspace at that point!) you can delete.
 
 * one bit of analysis philosophy is keeping a clean workspace / environment
     + if you save every temporary variable, model object, subsetted dataset, etc., your workspace will get really cluttered and personally I find it difficult to keep track of where things came from (e.g., what dataset is `community-data-4` and how does it differ from `community-data-5` or `community-data-2`?)
@@ -55,7 +53,11 @@ while you should *eventually* delete this text from your report, I suggest that 
     + even then, once they are no longer needed downstream, I will typically remove after they have served their purpose
 * one exception to this is that it can be (very) annoying to have to re-run everything above, say, a particular code chunk to get that code chunk to work again, if you delete some of the previous objects or objects you create in that chunk
     + thus, I often comment out the cleanup section while I am working on a particular chunk
-    + but once it is working to my satisfaction, I will un-comment it to 
+    + but once it is working to my satisfaction, I will un-comment it to execute the cleanup
+
+**Eventually, you will want to delete all of the text above this in your actual .Rmd file.**
+
+---
 
 # Overview
 
@@ -135,9 +137,9 @@ myotherdat <- read.csv("data-in/myotherdat.csv")
 
 # # do some simple exploration here to make sure your data are as expected
 # # keep it commented out, so as to keep your report uncluttered
-# head(iris)
-# str(iris)
-# View(iris)
+# head(mydat)
+# str(mydat)
+# View(mydat)
 
 # cleanup
 # typically you won't have anything else to clean up here, but just in case...
@@ -146,17 +148,19 @@ myotherdat <- read.csv("data-in/myotherdat.csv")
 
 * if there are any important things to note about the dataset after importing, formatting, please note that here
     + that said, it is not necessary to include any text here if there isn't anything that is noteworthy
-* do **NOT** print out a whole dataset into your report unless it is really tiny
+* do **NOT** print out a whole dataset into your report unless it is really tiny, AND there is a good reason to show it!
 * if there is something important for the readers / users of the report to note about the structure of the data, perhaps you can show the first few lines of the data frame, but don't do more than that unless there is a really good reason
 * if you must show part of the data, use the `kable` function (from the `knitr` package), along with formatting from `kableExtras` to make it prettier / easier to read than base R
 
 ## data formatting
 
-Data formatting, cleaning, and munging is typically the most time-consuming part of any analysis. Much of the time it makes sense to divide this into multiple code chunks, don't hesitate to do so if it makes it logically easier to follow.
+Data formatting, cleaning, and munging is typically the most time-consuming part of any analysis. Much of the time it makes sense to divide this into multiple code chunks, don't hesitate to do so if it makes it logically easier to follow, or if it makes it easier to code.
 
 Include some text here giving an overview of what needs to be done in the chunk or chunks below. If you do use multiple code chunks, include at least a little bit of text before each chunk alerting the reader what that chunk is doing.
 
 Often, we will merge multiple disparate datasets together. If this happens, and one or more of the input datasets is not used again, my preference is to remove those datasets to keep the analysis environment streamlined (following the "workspace / environment philosopy" text above).
+
+If there are columns in a dataset that are never used, my preference is to delete them, again to keep things clear and simple; this is where you want to do that. Using `dplyr::select()` is a good way to do that.
 
 ```{r data formatting}
 
@@ -287,8 +291,9 @@ as always, remember for each of those bits to **put some text here** to give som
 * give just a bit of brief context for each plot, before the code chunk in which you execute the plot
 * often you will want to save a plot, for example for submitting with a paper; but keep the code for saving commented out so that you don't repeatedly save new versions
     + the reasoning behind this is that Git / GitHub does well when versioning flat files like text files / .R / .Rmd / .csv files (etc.) and in particular only changes the differences
-    + Git cannot do that with binary files like image files / .pdfs / Word & Excel docs
-    + so it is best to save it as few times as possible; thus keep the code commented out and manually run it only as needed
+    + Git cannot do that with binary files like image files / .pdfs / Word & Excel docs; thus it is re-writing the *entire* file every time it gets updated, even with a tiny change
+    + thus, it is best to save image files as few times as possible; thus keep the code commented out and manually run it only as needed
+* when saving plots, be sure to save them in the `plots` subfolder (see code in the chunk below)
 
 ```{r plot analysis 1, eval = F}
 
