@@ -15,8 +15,8 @@ In particular, you will want to include text on:
 
 * the **main project folder** (not a subfolder) should ONLY contain:
     + R project file ("___.Rproj")&mdash;this will be renamed automatically following your project setup (you shouldn't have to do anything)
-    + Rmarkdown file ("___.Rmd")---you should **rename the file** called `Rmarkdown-template-Brosi-lab.Rmd` once you start your new project; this will become your primary analysis file
-    + Rmarkdown html report ("___.html")---**delete this file** (`Rmarkdown-template-Brosi-lab.html`) once you start your new project; when you knit your .Rmd file to create a report, it will generate a new .html file reflecting your updated name for the .Rmd file
+    + Rmarkdown file ("___.Rmd")&mdash;you should **rename the file** called `Rmarkdown-template-Brosi-lab.Rmd` once you start your new project; this will become your primary analysis file
+    + Rmarkdown html report ("___.html")&mdash;**delete this file** (`Rmarkdown-template-Brosi-lab.html`) once you start your new project; when you knit your .Rmd file to create a report, it will generate a new .html file reflecting your updated name for the .Rmd file
     + .gitignore (automatic; don't mess)
     + .DS_Store (automatic; don't mess)
 * **data-in subfolder** should contain the data files you will import into your project:
