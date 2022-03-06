@@ -11,10 +11,10 @@ In particular, you will want to include text on:
 * a brief description of where the data are from
 * a brief description of what the analysis is getting at 
 
-**File structure:**---YOU WILL NEED TO CHANGE SOME THINGS! read the below carefully:
+**File structure:**&mdash;YOU WILL NEED TO CHANGE SOME THINGS! read the below carefully:
 
 * the **main project folder** (not a subfolder) should ONLY contain:
-    + R project file ("___.Rproj")--this will be renamed automatically following your project setup (you shouldn't have to do anything)
+    + R project file ("___.Rproj")&mdash;this will be renamed automatically following your project setup (you shouldn't have to do anything)
     + Rmarkdown file ("___.Rmd")---you should **rename the file** called `Rmarkdown-template-Brosi-lab.Rmd` once you start your new project; this will become your primary analysis file
     + Rmarkdown html report ("___.html")---**delete this file** (`Rmarkdown-template-Brosi-lab.html`) once you start your new project; when you knit your .Rmd file to create a report, it will generate a new .html file reflecting your updated name for the .Rmd file
     + .gitignore (automatic; don't mess)
