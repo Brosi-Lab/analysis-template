@@ -19,7 +19,7 @@ In particular, you will want to include text on:
     + Rmarkdown html report ("___.html")&mdash;**delete this file** (`Rmarkdown-template-Brosi-lab.html`) once you start your new project; when you knit your .Rmd file to create a report, it will generate a new .html file reflecting your updated name for the .Rmd file
     + .gitignore (automatic; don't mess)
     + .DS_Store (automatic; don't mess)
-    + in addition, you may include one "sandbox" coding file, that you can play around in without worrying about making a mess (and also e.g. store deleted code temporarily, etc.). This can be a .R file or .Rmd; you'll have to manually add this if you want it
+    + in addition, you may include one "sandbox" coding file, that you can play around in without worrying about making a mess (including e.g. storing deleted code temporarily, etc.). This can be a .R file or .Rmd; you'll have to manually add this if you want it
 * **data-in subfolder** should contain the data files you will import into your project:
     + DELETE the "DELETE ME.txt" file included here
     + copy into this folder the data you will input
