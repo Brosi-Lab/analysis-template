@@ -189,15 +189,15 @@ Though if that philosophy is specific to particular analysis components, include
 
 In most of the empirically focused papers we write, the Results section starts off with a short subsection usually entitled something like "overview". Thus, it's good to have some code here that does basic calculations of things like how many samples you collected, how many species of plants and pollinators, how many interactions, how many seeds you counted, etc.
 
-In this context, I think it is helpful to put code into the text section of the report (i.e., not in a chunk) so that it can be, well, contextualized. For example, typing \`r str(iris)\` returns basic information on the structure of that dataset:
+In this context, I think it is helpful to put **in-line code** into the **text** section of the report (i.e., not in a chunk) so that the results can be, well, contextualized. For example, we could report on the mean sepal width in the `iris` dataframe that is included with R:
 
-`r str(iris)`
+* mean sepal width in the `iris` dataframe: `r mean(iris$Sepal.Width)`
 
-Sometimes it makes sense to include a code chunk here, if needed to make more complex calculations; anything more than a couple of operations is typically best left to a code chunk, and can then be reported on in the text below the code chunk. The chunk below includes code from Loy et al.'s analysis; the lines of codes included outside of the chunk are repeated within the chunk (but commented out and thus not evaluated in the chunk). While this is by definition repetitive, it makes it easy for a reader of the Rmarkdown report to see how the calculations were conducted, without having to separately open the .Rmd file.
+Sometimes it makes sense to include a code chunk (i.e., not just inline code) here, if needed to make more complex calculations; anything more than a couple of operations is typically best left to a code chunk, and can then be reported on in the text below the code chunk. The chunk below includes code from Loy et al.'s accelerated snowmelt and seed production analysis; the lines of codes included outside of the chunk (in the default Rmarkdown text) are repeated within the chunk (but commented out and thus not evaluated in the chunk). While this is by definition repetitive, it makes it easy for a reader of the Rmarkdown report to see how the calculations were conducted, without having to separately open the .Rmd file.
 
 ```{r data overview, eval = F}
 
-# FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
+# FIRST THING if altering: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # this code is just an example of one way this could be done; change to best suit the purposes of your project.
 

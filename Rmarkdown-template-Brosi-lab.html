@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Your Title [must edit]</h1>
 <h4 class="author">Your Name [must edit]</h4>
-<h4 class="date">started [date file was begun, in 12 October 2018 format]; most recent edits 05 March 2022</h4>
+<h4 class="date">started [date file was begun, in 12 October 2018 format]; most recent edits 07 March 2022</h4>
 
 </div>
 
@@ -415,7 +415,7 @@ myotherdat &lt;- read.csv(&quot;data-in/myotherdat.csv&quot;)
 <ul>
 <li>that said, it is not necessary to include any text here if there isn’t anything that is noteworthy</li>
 </ul></li>
-<li>do <strong>NOT</strong> print out a whole dataset into your report unless it is really tiny</li>
+<li>do <strong>NOT</strong> print out a whole dataset into your report unless it is really tiny, AND there is a good reason to show it!</li>
 <li>if there is something important for the readers / users of the report to note about the structure of the data, perhaps you can show the first few lines of the data frame, but don’t do more than that unless there is a really good reason</li>
 <li>if you must show part of the data, use the <code>kable</code> function (from the <code>knitr</code> package), along with formatting from <code>kableExtras</code> to make it prettier / easier to read than base R</li>
 </ul>
@@ -444,8 +444,36 @@ myotherdat &lt;- read.csv(&quot;data-in/myotherdat.csv&quot;)
 </ul>
 <p>sometimes it can be helpful to give a little bit of information on the philosophy behind your analysis choice. E.g., “an alternative way to analyze these data would be to instead do Y; we chose to do X because of reason 1, reason 2, and reason 3…”</p>
 <p>Though if that philosophy is specific to particular analysis components, include only in the components where it is relevant.</p>
-<div id="analysis-component-1" class="section level2" number="5.1">
-<h2 number="5.1"><span class="header-section-number">5.1</span> Analysis component 1</h2>
+<div id="data-overview" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> Data overview</h2>
+<p>In most of the empirically focused papers we write, the Results section starts off with a short subsection usually entitled something like “overview”. Thus, it’s good to have some code here that does basic calculations of things like how many samples you collected, how many species of plants and pollinators, how many interactions, how many seeds you counted, etc.</p>
+<p>In this context, I think it is helpful to put <strong>in-line code</strong> into the <strong>text</strong> section of the report (i.e., not in a chunk) so that the results can be, well, contextualized. For example, we could report on the mean sepal width in the <code>iris</code> dataframe that is included with R:</p>
+<ul>
+<li>mean sepal width in the <code>iris</code> dataframe: 3.0573333</li>
+</ul>
+<p>Sometimes it makes sense to include a code chunk (i.e., not just inline code) here, if needed to make more complex calculations; anything more than a couple of operations is typically best left to a code chunk, and can then be reported on in the text below the code chunk. The chunk below includes code from Loy et al.’s accelerated snowmelt and seed production analysis; the lines of codes included outside of the chunk (in the default Rmarkdown text) are repeated within the chunk (but commented out and thus not evaluated in the chunk). While this is by definition repetitive, it makes it easy for a reader of the Rmarkdown report to see how the calculations were conducted, without having to separately open the .Rmd file.</p>
+<pre class="r"><code># FIRST THING if altering: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
+
+# this code is just an example of one way this could be done; change to best suit the purposes of your project.
+
+# most of this is displayed in text below the code chunk
+
+# Number of plants
+# * `r nrow(masterdat)` plants
+
+# Number of plants per treatment
+plants.per.treat = masterdat %&gt;% group_by(plot.treat) %&gt;%
+  summarise(no_rows = length(plot.treat))
+    # + `r as.numeric(plants.per.treat[2,2])` plants in control plots
+    # + `r as.numeric(plants.per.treat[1,2])` plants in snowmelt-accelerated plots
+
+# Total number of seeds
+# * `r as.integer(sum(masterdat$totalseeds))` total seeds
+# &quot;as.integer&quot; makes it so that it does not display in scientific notation</code></pre>
+</div>
+<div id="analysis-component-1" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> Analysis component 1</h2>
+<p>Now we move on to the actual data analyses…</p>
 <ul>
 <li>it is <strong>really important</strong> to give detailed context to each analysis chunk; for example:
 <ul>
@@ -499,8 +527,8 @@ rm(aov.my.model, out.aov.my.model)
 <li>in contrast to doing all the analyses, then all the plots separately</li>
 </ul></li>
 </ul>
-<div id="you-can-potentially-break-analyses-down-into-subcomponents-with-headers" class="section level3" number="5.1.1">
-<h3 number="5.1.1"><span class="header-section-number">5.1.1</span> you can potentially break analyses down into subcomponents with headers</h3>
+<div id="you-can-potentially-break-analyses-down-into-subcomponents-with-headers" class="section level3" number="5.2.1">
+<h3 number="5.2.1"><span class="header-section-number">5.2.1</span> you can potentially break analyses down into subcomponents with headers</h3>
 <p>breaking an analysis down into smaller bits makes sense for many analyses…</p>
 <pre class="r"><code># this is where you would put your analysis code
 
@@ -510,8 +538,8 @@ rm(aov.my.model, out.aov.my.model)
 # (always clean up after yourself)</code></pre>
 <p>…but remember for each of those bits to <strong>put some text here</strong> to give some context about the results!</p>
 </div>
-<div id="model-validation-analysis-1" class="section level3" number="5.1.2">
-<h3 number="5.1.2"><span class="header-section-number">5.1.2</span> model validation, analysis 1</h3>
+<div id="model-validation-analysis-1" class="section level3" number="5.2.2">
+<h3 number="5.2.2"><span class="header-section-number">5.2.2</span> model validation, analysis 1</h3>
 <p>ALWAYS include data validation: do your data meet the assumptions of the models you are running? It’s good to include just a bit of text here about your validation, but typically it is very brief.</p>
 <p>If you ran an analysis two or more alternative ways, you may wish to split the validation component into multiple chunks. Remember to include some explanatory text, usually before and <em>always</em> after each chunk, even if very brief.</p>
 <pre class="r"><code># FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
@@ -532,8 +560,8 @@ testZeroInflation(sim.out.my.model, plot = F) # print zero-inflation results
 rm(sim.out.my.model)</code></pre>
 <p>as always, remember for each of those bits to <strong>put some text here</strong> to give some context about the validation results! Just showing a validation plot without any context is unhelpful. Tell the reader / your future self <em>why</em> your plot (or other result) is consistent (or not!) with model assumptions.</p>
 </div>
-<div id="plots-analysis-1" class="section level3" number="5.1.3">
-<h3 number="5.1.3"><span class="header-section-number">5.1.3</span> plots analysis 1</h3>
+<div id="plots-analysis-1" class="section level3" number="5.2.3">
+<h3 number="5.2.3"><span class="header-section-number">5.2.3</span> plots analysis 1</h3>
 <ul>
 <li>I strongly prefer to have plots associated with each analysis, near each analysis in the Rmarkdown document (as opposed, e.g., to putting all of the analyses together at the end)
 <ul>
@@ -543,9 +571,10 @@ rm(sim.out.my.model)</code></pre>
 <li>often you will want to save a plot, for example for submitting with a paper; but keep the code for saving commented out so that you don’t repeatedly save new versions
 <ul>
 <li>the reasoning behind this is that Git / GitHub does well when versioning flat files like text files / .R / .Rmd / .csv files (etc.) and in particular only changes the differences</li>
-<li>Git cannot do that with binary files like image files / .pdfs / Word &amp; Excel docs</li>
-<li>so it is best to save it as few times as possible; thus keep the code commented out and manually run it only as needed</li>
+<li>Git cannot do that with binary files like image files / .pdfs / Word &amp; Excel docs; thus it is re-writing the <em>entire</em> file every time it gets updated, even with a tiny change</li>
+<li>thus, it is best to save image files as few times as possible; thus keep the code commented out and manually run it only as needed</li>
 </ul></li>
+<li>when saving plots, be sure to save them in the <code>plots</code> subfolder (see code in the chunk below)</li>
 </ul>
 <pre class="r"><code># FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
@@ -575,8 +604,8 @@ rm(myplotdata, myplot)</code></pre>
 <p>you may wish to include some brief text here, e.g., “this plot shows the negative overall effect of potassium cyanide exposure on bee survival, underscoring our statistical results”</p>
 </div>
 </div>
-<div id="analysis-2" class="section level2" number="5.2">
-<h2 number="5.2"><span class="header-section-number">5.2</span> Analysis 2</h2>
+<div id="analysis-2" class="section level2" number="5.3">
+<h2 number="5.3"><span class="header-section-number">5.3</span> Analysis 2</h2>
 <p>Repeat as needed for each analysis component (analysis 2, 3…). remember to include:</p>
 <ul>
 <li>analysis chunk(s)—that’s the easy part</li>
