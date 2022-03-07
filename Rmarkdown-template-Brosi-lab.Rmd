@@ -185,7 +185,42 @@ sometimes it can be helpful to give a little bit of information on the philosoph
 
 Though if that philosophy is specific to particular analysis components, include only in the components where it is relevant.
 
+## Data overview
+
+In most of the empirically focused papers we write, the Results section starts off with a short subsection usually entitled something like "overview". Thus, it's good to have some code here that does basic calculations of things like how many samples you collected, how many species of plants and pollinators, how many interactions, how many seeds you counted, etc.
+
+In this context, I think it is helpful to put code into the text section of the report (i.e., not in a chunk) so that it can be, well, contextualized. For example, typing \`r str(iris)\` returns basic information on the structure of that dataset:
+
+`r str(iris)`
+
+Sometimes it makes sense to include a code chunk here, if needed to make more complex calculations; anything more than a couple of operations is typically best left to a code chunk, and can then be reported on in the text below the code chunk. The chunk below includes code from Loy et al.'s analysis; the lines of codes included outside of the chunk are repeated within the chunk (but commented out and thus not evaluated in the chunk). While this is by definition repetitive, it makes it easy for a reader of the Rmarkdown report to see how the calculations were conducted, without having to separately open the .Rmd file.
+
+```{r data overview, eval = F}
+
+# FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
+
+# this code is just an example of one way this could be done; change to best suit the purposes of your project.
+
+# most of this is displayed in text below the code chunk
+
+# Number of plants
+# * `r nrow(masterdat)` plants
+
+# Number of plants per treatment
+plants.per.treat = masterdat %>% group_by(plot.treat) %>%
+  summarise(no_rows = length(plot.treat))
+    # + `r as.numeric(plants.per.treat[2,2])` plants in control plots
+    # + `r as.numeric(plants.per.treat[1,2])` plants in snowmelt-accelerated plots
+
+# Total number of seeds
+# * `r as.integer(sum(masterdat$totalseeds))` total seeds
+# "as.integer" makes it so that it does not display in scientific notation
+
+```
+
 ## Analysis component 1
+
+Now we move on to the actual data analyses...
 
 * it is **really important** to give detailed context to each analysis chunk; for example:
     + what does this chunk do?
