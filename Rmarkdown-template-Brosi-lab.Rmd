@@ -63,34 +63,81 @@ while you should *eventually* delete the text in this section from your report, 
 
 give context to your project here. while you don't have to go overboard, it is important to lay out what the questions are that you are answering, where the data come from, and the basic approach you will be taking to the analysis. Don't skimp.
 
-# Load Packages
+# Package Loading and Management
+
+## package loading
 
 * it is good practice to have a single code chunk at the top of your file that loads ALL packages used anywhere in the analysis. That way, if someone else is trying to replicate your code, they will not get part of the way through and realize they are missing a needed package.
-* it is also good practice to refer to packages needed for code to run, in the place *where* that code is implemented
-    + this is less important for commonly-used packages like `ggplot2` and (much) more important for less-used packages
+* it is also good practice to refer to uncommon packages needed for code to run, in the place *where* that code is implemented
+    + this is not particularly important for commonly-used packages like `ggplot2` and (much) more important for less-used packages
 * a minor pet peeve of mine is the package startup messages that can massively clutter up Rmarkdown reports
     + I include `message = F, results = F, warning = F` in the code chunk header to get rid of those...
     + but pay attention to the messages in case there are important warnings or errors; they will appear in this window when the code chunk is run, though not in the .html report
-* I have code below that allows you to:
+* the code in the chunk below allows you to:
     + make a list of all the packages you want / need for your Rmarkdown file
-    + load the packages
-* the code in the chunk below doesn't work for packages stored in non-CRAN repositories (e.g. GitHub)
+    + load the packages in a single line of code
 * I suggest always including the `tidyverse` and `knitr` packages at a minimum
     + if you load `tidyverse` you don't have to load its subcomponents (`ggplot2`, `dplyr`, `stringr`, etc.)
     + I have also included a few other packages that we often use in this list
     + however, you should remove any packages from this list that you don't actually use!!
 * usually, I don't have any text above the code chunk for package loading as it is self explanatory
     + however, if you are loading non-standard packages directly from GitHub or another non-CRAN source, you may want to include a note about it
+    
+## Package management using `renv`
+
+* package conflicts are one source of non-reproducibility, as well as future issues and collaborator conflicts with your code
+    + if you are using one version of a package, say, and a collaborator is using another, you may get different results or code may not function
+    + if anyone (including yourself) goes back to an analysis file you had set up previously, and some of the packages have been updated in the meanwhile, it may not work or may generate different results
+* one straightforward way to manage packages is with the `renv` package
+    + more at https://rstudio.github.io/renv/articles/renv.html 
+    + when you initialize `renv` with your project, it creates a "snapshot" of the *exact versions of packages* that you are using
+    + because CRAN is an archive, it includes *pointers* to those exact package versions on CRAN, rather than storing the entire packages along with the project
+    + a version of each exact package is stored on your local machine (but they have to be anyway for your code to function)
+* **workflow is easy** in `renv` (I promise!)
+    + initialize your project once and only once using `renv::init()`
+    + anytime any packages are added or removed, call `renv::snapshot()` to update the "lockfile" of which packages `renv` is managing
+    + most of the time, that is all you will need to do!
+    + if you do run into package conflicts / issues, you can call `renv::restore()` to go back to the set of packages and versions that you previously were using
+* to change your mind about `renv`... (usually not an issue, just in case)
+    + if you were playing around with `renv` and run into errors / problems related to `renv` itself (e.g., you initialize a project but then accidentally delete the lockfile, etc.), you can stop `renv` from managing your packages in a project by calling `renv::deactivate()`
+    + if you deactivate `renv` from a project, but you've still kept the lockfile etc., you can reactivate it as well via `renv::activate()` 
+
 
 ```{r packages, message = F, results = F, warning = F}
 
-# create a list of packages you need:
+# IF USING RENV TO MANAGE PACKAGES (highly recommended)
+# make sure `renv` package is installed: `install.packages("renv")`
+# once and only once, call:
+# renv::init()
+# once that is done, delete the code on this line and above
+# (delete the above code if not using `renv`)
+
+# CREATE PACKAGE LIST:
 # (ADD / delete the packages you need / don't below!)
 Packages <- c("tidyverse", "knitr", "kableExtra", "glmmTMB", "broom.mixed",
               "car") 
 
-# this line then loads all of the packages:
+# LOAD PACKAGES:
 lapply(Packages, library, character.only = TRUE)
+
+# # SNAPHOT packages for `renv`
+# # if using renv, then run the line of code below whenever packages change
+# # ...but ONLY after making sure that the code is running and packages are
+# # playing nicely with one another
+# renv::snapshot() # leave this commented out, run as needed
+
+# # RESTORE packages using `renv`
+# # only use this if you have added new packages or changed package versions
+# # and your code is now not working
+# renv::restore() # leave this commented out, only use if needed (rare)
+
+# # DEACTIVATE / ACTIVATE `renv`
+# if you need to deactivate `renv` from your project:
+# renv::deactivate() # leave this commented out, only use if needed (rare)
+# if you want to re-activate `renv`:
+# renv::activate() # leave this commented out, only use if needed (rare)
+
+# (delete code relating to snapshot / restore / deactivate if not using `renv`)
 
 ```
 

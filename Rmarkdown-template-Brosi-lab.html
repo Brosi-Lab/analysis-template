@@ -324,25 +324,26 @@ div.tocify {
 <h1 number="2"><span class="header-section-number">2</span> Overview</h1>
 <p>give context to your project here. while you don’t have to go overboard, it is important to lay out what the questions are that you are answering, where the data come from, and the basic approach you will be taking to the analysis. Don’t skimp.</p>
 </div>
-<div id="load-packages" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Load Packages</h1>
+<div id="package-loading-and-management" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Package Loading and Management</h1>
+<div id="package-loading" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> package loading</h2>
 <ul>
 <li>it is good practice to have a single code chunk at the top of your file that loads ALL packages used anywhere in the analysis. That way, if someone else is trying to replicate your code, they will not get part of the way through and realize they are missing a needed package.</li>
-<li>it is also good practice to refer to packages needed for code to run, in the place <em>where</em> that code is implemented
+<li>it is also good practice to refer to uncommon packages needed for code to run, in the place <em>where</em> that code is implemented
 <ul>
-<li>this is less important for commonly-used packages like <code>ggplot2</code> and (much) more important for less-used packages</li>
+<li>this is not particularly important for commonly-used packages like <code>ggplot2</code> and (much) more important for less-used packages</li>
 </ul></li>
 <li>a minor pet peeve of mine is the package startup messages that can massively clutter up Rmarkdown reports
 <ul>
 <li>I include <code>message = F, results = F, warning = F</code> in the code chunk header to get rid of those…</li>
 <li>but pay attention to the messages in case there are important warnings or errors; they will appear in this window when the code chunk is run, though not in the .html report</li>
 </ul></li>
-<li>I have code below that allows you to:
+<li>the code in the chunk below allows you to:
 <ul>
 <li>make a list of all the packages you want / need for your Rmarkdown file</li>
-<li>load the packages</li>
+<li>load the packages in a single line of code</li>
 </ul></li>
-<li>the code in the chunk below doesn’t work for packages stored in non-CRAN repositories (e.g. GitHub)</li>
 <li>I suggest always including the <code>tidyverse</code> and <code>knitr</code> packages at a minimum
 <ul>
 <li>if you load <code>tidyverse</code> you don’t have to load its subcomponents (<code>ggplot2</code>, <code>dplyr</code>, <code>stringr</code>, etc.)</li>
@@ -354,16 +355,73 @@ div.tocify {
 <li>however, if you are loading non-standard packages directly from GitHub or another non-CRAN source, you may want to include a note about it</li>
 </ul></li>
 </ul>
-<pre class="r"><code># create a list of packages you need:
+</div>
+<div id="package-management-using-renv" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Package management using <code>renv</code></h2>
+<ul>
+<li>package conflicts are one source of non-reproducibility, as well as future issues and collaborator conflicts with your code
+<ul>
+<li>if you are using one version of a package, say, and a collaborator is using another, you may get different results or code may not function</li>
+<li>if anyone (including yourself) goes back to an analysis file you had set up previously, and some of the packages have been updated in the meanwhile, it may not work or may generate different results</li>
+</ul></li>
+<li>one straightforward way to manage packages is with the <code>renv</code> package
+<ul>
+<li>more at <a href="https://rstudio.github.io/renv/articles/renv.html" class="uri">https://rstudio.github.io/renv/articles/renv.html</a></li>
+<li>when you initialize <code>renv</code> with your project, it creates a “snapshot” of the <em>exact versions of packages</em> that you are using</li>
+<li>because CRAN is an archive, it includes <em>pointers</em> to those exact package versions on CRAN, rather than storing the entire packages along with the project</li>
+<li>a version of each exact package is stored on your local machine (but they have to be anyway for your code to function)</li>
+</ul></li>
+<li><strong>workflow is easy</strong> in <code>renv</code> (I promise!)
+<ul>
+<li>initialize your project once and only once using <code>renv::init()</code></li>
+<li>anytime any packages are added or removed, call <code>renv::snapshot()</code> to update the “lockfile” of which packages <code>renv</code> is managing</li>
+<li>most of the time, that is all you will need to do!</li>
+<li>if you do run into package conflicts / issues, you can call <code>renv::restore()</code> to go back to the set of packages and versions that you previously were using</li>
+</ul></li>
+<li>to change your mind about <code>renv</code>… (usually not an issue, just in case)
+<ul>
+<li>if you were playing around with <code>renv</code> and run into errors / problems related to <code>renv</code> itself (e.g., you initialize a project but then accidentally delete the lockfile, etc.), you can stop <code>renv</code> from managing your packages in a project by calling <code>renv::deactivate()</code></li>
+<li>if you deactivate <code>renv</code> from a project, but you’ve still kept the lockfile etc., you can reactivate it as well via <code>renv::activate()</code></li>
+</ul></li>
+</ul>
+<pre class="r"><code># IF USING RENV TO MANAGE PACKAGES (highly recommended)
+# make sure `renv` package is installed: `install.packages(&quot;renv&quot;)`
+# once and only once, call:
+# renv::init()
+# once that is done, delete the code on this line and above
+# (delete the above code if not using `renv`)
+
+# CREATE PACKAGE LIST:
 # (ADD / delete the packages you need / don&#39;t below!)
 Packages &lt;- c(&quot;tidyverse&quot;, &quot;knitr&quot;, &quot;kableExtra&quot;, &quot;glmmTMB&quot;, &quot;broom.mixed&quot;,
               &quot;car&quot;) 
 
-# this line then loads all of the packages:
-lapply(Packages, library, character.only = TRUE)</code></pre>
+# LOAD PACKAGES:
+lapply(Packages, library, character.only = TRUE)
+
+# # SNAPHOT packages for `renv`
+# # if using renv, then run the line of code below whenever packages change
+# # ...but ONLY after making sure that the code is running and packages are
+# # playing nicely with one another
+# renv::snapshot() # leave this commented out, run as needed
+
+# # RESTORE packages using `renv`
+# # only use this if you have added new packages or changed package versions
+# # and your code is now not working
+# renv::restore() # leave this commented out, only use if needed (rare)
+
+# # DEACTIVATE / ACTIVATE `renv`
+# if you need to deactivate `renv` from your project:
+# renv::deactivate() # leave this commented out, only use if needed (rare)
+# if you want to re-activate `renv`:
+# renv::activate() # leave this commented out, only use if needed (rare)
+
+# (delete code relating to snapshot / restore / deactivate if not using `renv`)</code></pre>
 <!-- keep the code below; it prints the packages you used in the Rmarkdown report -->
 <!-- but you probably want to delete these comments :) -->
-<p>Packages used: tidyverse, knitr, kableExtra, glmmTMB, broom.mixed, car</p>
+<p><strong>Packages used:</strong></p>
+<p>tidyverse, knitr, kableExtra, glmmTMB, broom.mixed, car</p>
+</div>
 </div>
 <div id="data" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> Data</h1>
