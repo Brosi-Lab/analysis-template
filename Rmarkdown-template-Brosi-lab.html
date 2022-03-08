@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Your Title [must edit]</h1>
 <h4 class="author">Your Name [must edit]</h4>
-<h4 class="date">started [date file was begun, in 12 October 2018 format]; most recent edits 07 March 2022</h4>
+<h4 class="date">started [date file was begun, in 12 October 2018 format]; most recent edits 08 March 2022</h4>
 
 </div>
 
@@ -374,7 +374,8 @@ lapply(Packages, library, character.only = TRUE)</code></pre>
 <li>to import your data:
 <ul>
 <li>copy each dataset to be input into the <code>data-in</code> subfolder in your repository</li>
-<li><strong>NEVER EVER</strong> use an absolute file path (e.g., <code>C:/Windows/Bobsdirectory/dataset1</code>) anywhere, but they are most common in data import code</li>
+<li>your input data should never be anywhere else in the project</li>
+<li><strong>NEVER EVER</strong> use an absolute file path (e.g., <code>C:/Windows/Bobsdirectory/dataset1.csv</code>) anywhere, but they are most common in data import code</li>
 <li>instead, <strong>ALWAYS</strong> use a relative file path, typically <code>read.csv(&quot;data-in/mydata&quot;)</code> if the name of the data file you added was “mydata”—but always leaving the <code>data-in/</code> prefix in the path</li>
 <li>repeat in the code chunk below for every dataset you will be importing for your analysis</li>
 </ul></li>
@@ -385,7 +386,8 @@ lapply(Packages, library, character.only = TRUE)</code></pre>
 <li>it is absolutely worth checking out your dataset in various ways, and doing it here (i.e., upon importing)</li>
 <li>But that <em>doesn’t</em> mean that those checks should be printed out in your report—they probably shouldn’t, they will make the report feel cluttered
 <ul>
-<li>one thing I often do is to put in the code for my checks, but to comment it out (e.g., <code># head(dat)</code> or <code># str(iris)</code> or <code># View(iris)</code>) so that it doesn’t clutter up the report, but someone examining the code can see that I did go through and check it out</li>
+<li>one thing I have done is to put in the code for my checks, but to comment it out (e.g., <code># head(dat)</code> or <code># str(iris)</code> or <code># View(iris)</code>) so that it doesn’t clutter up the report, but someone examining the code can see that I did go through and check it out</li>
+<li>still, I usually delete these lines of code just to keep things clean and streamlined</li>
 </ul></li>
 </ul>
 <pre class="r"><code># FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
@@ -407,6 +409,8 @@ myotherdat &lt;- read.csv(&quot;data-in/myotherdat.csv&quot;)
 # head(mydat)
 # str(mydat)
 # View(mydat)
+# you are welcome / encouraged to delete that code after having
+# done some basic checks on your data
 
 # cleanup
 # typically you won&#39;t have anything else to clean up here, but just in case...</code></pre>
@@ -504,6 +508,9 @@ plants.per.treat = masterdat %&gt;% group_by(plot.treat) %&gt;%
 # `Anova` function from the `car` package)
 aov.my.model = Anova(my.model)
 
+# DISPLAY MODEL RESULTS
+aov.my.model
+
 # SAVE MODEL RESULTS (often but not always want to do this)
 # this is in addition to displaying them in the Rmarkdown report
 # for mixed-effects models, the `broom.mixed` package is very helpful for that:
@@ -568,18 +575,26 @@ rm(sim.out.my.model)</code></pre>
 <li>I think it makes it easier to read / interpret the analysis report, but also makes it easier to code.</li>
 </ul></li>
 <li>give just a bit of brief context for each plot, before the code chunk in which you execute the plot</li>
-<li>often you will want to save a plot, for example for submitting with a paper; but keep the code for saving commented out so that you don’t repeatedly save new versions
+<li>when saving plots, <strong>be sure to save them in the <code>plots</code> subfolder</strong> (see code in the chunk below)</li>
+</ul>
+<p><strong>saving plots and</strong> <code>.gitignore</code></p>
 <ul>
-<li>the reasoning behind this is that Git / GitHub does well when versioning flat files like text files / .R / .Rmd / .csv files (etc.) and in particular only changes the differences</li>
-<li>Git cannot do that with binary files like image files / .pdfs / Word &amp; Excel docs; thus it is re-writing the <em>entire</em> file every time it gets updated, even with a tiny change</li>
-<li>thus, it is best to save image files as few times as possible; thus keep the code commented out and manually run it only as needed</li>
+<li>this project has been set up with the <code>plots/</code> subfolder included in <code>.gitignore</code></li>
+<li>thus, any plots you save as part of the project (assuming you save them in the <code>plots/</code> subfolder, as you always should!) will be saved on your local computer, but not on GitHub
+<ul>
+<li>the rationale behind this is that Git does not do well with versioning binary files like image files / .pdfs / Word &amp; Excel docs; thus it is re-writing the <em>entire</em> file every time it gets updated, even with a tiny change</li>
 </ul></li>
-<li>when saving plots, be sure to save them in the <code>plots</code> subfolder (see code in the chunk below)</li>
+<li>you should display at least the key plots in your .Rmarkdown report, so they will be viewable by anyone checking out the project
+<ul>
+<li>if anyone wants to generate the exact saved plots (i.e. the graphics files) that are in the <code>plots/</code> subfolder, the code should be set up to be reproducible so that should be straightforward</li>
+</ul></li>
 </ul>
 <pre class="r"><code># FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # any data preparation / summarization needed for plotting
-myplotdata = 
+# code below is just a placeholder!
+myplotdata = mydata %&gt;% group_by(mygroupingvar1, mygroupingvar1) %&gt;% 
+  summarize(mean = mean(), stdev = sd()...) 
 
 # create the actual plot (almost always using `ggplot2`)
 myplot = ggplot(myplotdata, ...)
@@ -590,12 +605,8 @@ myplot = ggplot(myplotdata, ...)
 myplot
 
 # SAVE PLOT
-# =============================
-# (keep the actual code commented out to prevent repeated saving on GitHub)
-# re-save when this changes, but only as needed
+# example, but key thing is the `plots/` prefix in the file path
 ggsave(myplot, file = &quot;plots/myplot.pdf&quot;, width = 5, height = 3)
-# **IMPORTANT**: note the &quot;plots/&quot; prefix in the name, that saves your plot in
-# the `plots` folder of your project. ALWAYS use that!
 
 # # CLEANUP
 # # remember to also clean up any objects such as data summarizations

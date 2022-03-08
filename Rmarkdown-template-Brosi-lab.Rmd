@@ -97,7 +97,8 @@ lapply(Packages, library, character.only = TRUE)
 <!-- keep the code below; it prints the packages you used in the Rmarkdown report -->
 <!-- but you probably want to delete these comments :) -->
 
-Packages used:
+**Packages used:**
+
 `r Packages`
 
 # Data
@@ -254,6 +255,9 @@ In addition, for many if not most analyses, we typically have to do a little bit
 # `Anova` function from the `car` package)
 aov.my.model = Anova(my.model)
 
+# DISPLAY MODEL RESULTS
+aov.my.model
+
 # SAVE MODEL RESULTS (often but not always want to do this)
 # this is in addition to displaying them in the Rmarkdown report
 # for mixed-effects models, the `broom.mixed` package is very helpful for that:
@@ -328,18 +332,25 @@ as always, remember for each of those bits to **put some text here** to give som
 * I strongly prefer to have plots associated with each analysis, near each analysis in the Rmarkdown document (as opposed, e.g., to putting all of the analyses together at the end)
     + I think it makes it easier to read / interpret the analysis report, but also makes it easier to code.
 * give just a bit of brief context for each plot, before the code chunk in which you execute the plot
-* often you will want to save a plot, for example for submitting with a paper; but keep the code for saving commented out so that you don't repeatedly save new versions
-    + the reasoning behind this is that Git / GitHub does well when versioning flat files like text files / .R / .Rmd / .csv files (etc.) and in particular only changes the differences
-    + Git cannot do that with binary files like image files / .pdfs / Word & Excel docs; thus it is re-writing the *entire* file every time it gets updated, even with a tiny change
-    + thus, it is best to save image files as few times as possible; thus keep the code commented out and manually run it only as needed
-* when saving plots, be sure to save them in the `plots` subfolder (see code in the chunk below)
+* when saving plots, **be sure to save them in the `plots` subfolder** (see code in the chunk below)
+
+**saving plots and** `.gitignore`
+
+* this project has been set up with the `plots/` subfolder included in `.gitignore`
+* thus, any plots you save as part of the project (assuming you save them in the `plots/` subfolder, as you always should!) will be saved on your local computer, but not on GitHub
+    + the rationale behind this is that Git does not do well with versioning binary files like image files / .pdfs / Word & Excel docs; thus it is re-writing the *entire* file every time it gets updated, even with a tiny change
+* you should display at least the key plots in your .Rmarkdown report, so they will be viewable by anyone checking out the project
+    + if anyone wants to generate the exact saved plots (i.e. the graphics files) that are in the `plots/` subfolder, the code should be set up to be reproducible so that should be straightforward
+
 
 ```{r plot analysis 1, eval = F}
 
 # FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # any data preparation / summarization needed for plotting
-myplotdata = 
+# code below is just a placeholder!
+myplotdata = mydata %>% group_by(mygroupingvar1, mygroupingvar1) %>% 
+  summarize(mean = mean(), stdev = sd()...) 
 
 # create the actual plot (almost always using `ggplot2`)
 myplot = ggplot(myplotdata, ...)
@@ -350,12 +361,8 @@ myplot = ggplot(myplotdata, ...)
 myplot
 
 # SAVE PLOT
-# =============================
-# (keep the actual code commented out to prevent repeated saving on GitHub)
-# re-save when this changes, but only as needed
+# example, but key thing is the `plots/` prefix in the file path
 ggsave(myplot, file = "plots/myplot.pdf", width = 5, height = 3)
-# **IMPORTANT**: note the "plots/" prefix in the name, that saves your plot in
-# the `plots` folder of your project. ALWAYS use that!
 
 # # CLEANUP
 # # remember to also clean up any objects such as data summarizations
