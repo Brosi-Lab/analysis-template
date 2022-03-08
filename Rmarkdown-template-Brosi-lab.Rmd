@@ -107,7 +107,8 @@ Packages used:
 * describe details of each dataset and where it comes from here (before the code chunk)
 * to import your data:
     + copy each dataset to be input into the `data-in` subfolder in your repository
-    + **NEVER EVER** use an absolute file path (e.g., `C:/Windows/Bobsdirectory/dataset1`) anywhere, but they are most common in data import code
+    + your input data should never be anywhere else in the project
+    + **NEVER EVER** use an absolute file path (e.g., `C:/Windows/Bobsdirectory/dataset1.csv`) anywhere, but they are most common in data import code
     + instead, **ALWAYS** use a relative file path, typically `read.csv("data-in/mydata")` if the name of the data file you added was "mydata"---but always leaving the `data-in/` prefix in the path
     + repeat in the code chunk below for every dataset you will be importing for your analysis
 * in general, try to avoid ever setting the working directory (`setwd()`)---if you are using an R project, then it will set the working directory for you, and you can specify subfolders in the line of code where you are reading from or writing to them
@@ -116,7 +117,8 @@ Once you have imported your data:
 
 * it is absolutely worth checking out your dataset in various ways, and doing it here (i.e., upon importing)
 * But that *doesn't* mean that those checks should be printed out in your report---they probably shouldn't, they will make the report feel cluttered
-    + one thing I often do is to put in the code for my checks, but to comment it out (e.g., `# head(dat)` or `# str(iris)` or `# View(iris)`) so that it doesn't clutter up the report, but someone examining the code can see that I did go through and check it out
+    + one thing I have done is to put in the code for my checks, but to comment it out (e.g., `# head(dat)` or `# str(iris)` or `# View(iris)`) so that it doesn't clutter up the report, but someone examining the code can see that I did go through and check it out
+    + still, I usually delete these lines of code just to keep things clean and streamlined
 
 
 ```{r data import, eval = F}
@@ -140,6 +142,8 @@ myotherdat <- read.csv("data-in/myotherdat.csv")
 # head(mydat)
 # str(mydat)
 # View(mydat)
+# you are welcome / encouraged to delete that code after having
+# done some basic checks on your data
 
 # cleanup
 # typically you won't have anything else to clean up here, but just in case...
