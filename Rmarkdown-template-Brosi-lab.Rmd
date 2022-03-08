@@ -105,7 +105,7 @@ give context to your project here. while you don't have to go overboard, it is i
 
 ```{r packages, message = F, results = F, warning = F}
 
-# IF USING RENV TO MANAGE PACKAGES (highly recommended)
+# IF USING RENV TO MANAGE PACKAGES (recommended)
 # make sure `renv` package is installed: `install.packages("renv")`
 # once and only once, call:
 # renv::init()
