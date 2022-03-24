@@ -338,6 +338,7 @@ div.tocify {
 <ul>
 <li>I include <code>message = F, results = F, warning = F</code> in the code chunk header to get rid of those…</li>
 <li>but pay attention to the messages in case there are important warnings or errors; they will appear in this window when the code chunk is run, though not in the .html report</li>
+<li>a perhaps better alternative to just paying attention is included here, using the <code>evaluate</code> package which allows for saving of messages arising from whatever process you specify (including package loading) and then printing them at the end of the report, along with <code>sessionInfo</code>; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)</li>
 </ul></li>
 <li>the code in the chunk below allows you to:
 <ul>
@@ -347,7 +348,6 @@ div.tocify {
 <li>I suggest always including the <code>tidyverse</code> and <code>knitr</code> packages at a minimum
 <ul>
 <li>if you load <code>tidyverse</code> you don’t have to load its subcomponents (<code>ggplot2</code>, <code>dplyr</code>, <code>stringr</code>, etc.)</li>
-<li>another one is <code>evaluate</code> which allows for saving of package loading messages and then printing them at the end of the report, along with <code>sessionInfo</code>; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)</li>
 <li>I have also included a few other packages that we often use in this list</li>
 <li>however, you should remove any packages from this list that you don’t actually use!!</li>
 </ul></li>
@@ -400,10 +400,10 @@ Packages &lt;- c(&quot;tidyverse&quot;, &quot;knitr&quot;, &quot;kableExtra&quot
 # LOAD PACKAGES:
 lapply(Packages, library, character.only = TRUE)
 
+# SAVE PACKAGE WARNING MESSAGES
 # this saves messages associated with package loading; display at the end
 # `evaluate` package
 package.loading.messages = evaluate(lapply(Packages, library, character.only = TRUE))
-
 
 # # SNAPHOT packages for `renv`
 # # if using renv, then run the line of code below whenever packages change
