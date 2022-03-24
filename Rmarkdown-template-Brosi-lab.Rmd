@@ -11,6 +11,9 @@ output:
     code_folding: hide
     theme: cosmo
     keep_md: true
+  md_document:
+    variant: markdown_github
+
 ---
 
 ```{r setup, include=FALSE}
