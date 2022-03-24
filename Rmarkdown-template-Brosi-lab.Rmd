@@ -73,12 +73,12 @@ give context to your project here. while you don't have to go overboard, it is i
 * a minor pet peeve of mine is the package startup messages that can massively clutter up Rmarkdown reports
     + I include `message = F, results = F, warning = F` in the code chunk header to get rid of those...
     + but pay attention to the messages in case there are important warnings or errors; they will appear in this window when the code chunk is run, though not in the .html report
+    + a perhaps better alternative to just paying attention is included here, using the `evaluate` package which allows for saving of messages arising from whatever process you specify (including package loading) and then printing them at the end of the report, along with `sessionInfo`; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)
 * the code in the chunk below allows you to:
     + make a list of all the packages you want / need for your Rmarkdown file
     + load the packages in a single line of code
 * I suggest always including the `tidyverse` and `knitr` packages at a minimum
     + if you load `tidyverse` you don't have to load its subcomponents (`ggplot2`, `dplyr`, `stringr`, etc.)
-    + another one is `evaluate` which allows for saving of package loading messages and then printing them at the end of the report, along with `sessionInfo`; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)
     + I have also included a few other packages that we often use in this list
     + however, you should remove any packages from this list that you don't actually use!!
 * usually, I don't have any text above the code chunk for package loading as it is self explanatory
@@ -121,10 +121,10 @@ Packages <- c("tidyverse", "knitr", "kableExtra", "glmmTMB", "broom.mixed",
 # LOAD PACKAGES:
 lapply(Packages, library, character.only = TRUE)
 
+# SAVE PACKAGE WARNING MESSAGES
 # this saves messages associated with package loading; display at the end
 # `evaluate` package
 package.loading.messages = evaluate(lapply(Packages, library, character.only = TRUE))
-
 
 # # SNAPHOT packages for `renv`
 # # if using renv, then run the line of code below whenever packages change
