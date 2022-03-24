@@ -1,7 +1,7 @@
 ---
 title: "Your Title [must edit]"
 author: "Your Name [must edit]"
-date: "started [date file was begun, in 12 October 2018 format]; most recent edits `r format(Sys.time(), '%d %B %Y')`"
+date: "started [date file was begun, in 12 October 2018 format]; most recent edits 24 March 2022"
 output:
   html_document:
     toc: true
@@ -13,9 +13,7 @@ output:
     keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 # Preamble [*delete this when altering for your project!*]
 
@@ -105,8 +103,8 @@ give context to your project here. while you don't have to go overboard, it is i
     + if you deactivate `renv` from a project, but you've still kept the lockfile etc., you can reactivate it as well via `renv::activate()` 
 
 
-```{r packages, message = F, results = F, warning = F}
 
+```r
 # IF USING RENV TO MANAGE PACKAGES (recommended)
 # make sure `renv` package is installed: `install.packages("renv")`
 # once and only once, call:
@@ -145,7 +143,6 @@ package.loading.messages = evaluate(lapply(Packages, library, character.only = T
 # renv::activate() # leave this commented out, only use if needed (rare)
 
 # (delete code relating to snapshot / restore / deactivate if not using `renv`)
-
 ```
 
 <!-- keep the code below; it prints the packages you used in the Rmarkdown report -->
@@ -153,7 +150,7 @@ package.loading.messages = evaluate(lapply(Packages, library, character.only = T
 
 **Packages used:**
 
-`r Packages`
+tidyverse, knitr, kableExtra, glmmTMB, broom.mixed, car, evaluate
 
 # Data
 
@@ -176,8 +173,8 @@ Once you have imported your data:
     + still, I usually delete these lines of code just to keep things clean and streamlined
 
 
-```{r data import, eval = F}
 
+```r
 # FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # start by removing the `Packages` variable from your environment
@@ -202,7 +199,6 @@ myotherdat <- read.csv("data-in/myotherdat.csv")
 
 # cleanup
 # typically you won't have anything else to clean up here, but just in case...
-
 ```
 
 * if there are any important things to note about the dataset after importing, formatting, please note that here
@@ -221,15 +217,14 @@ Often, we will merge multiple disparate datasets together. If this happens, and 
 
 If there are columns in a dataset that are never used, my preference is to delete them, again to keep things clear and simple; this is where you want to do that. Using `dplyr::select()` is a good way to do that.
 
-```{r data formatting}
 
+```r
 # this is where you format your data
 
 # again, consider using multiple code chunks
 
 # cleanup
 # (always clean up after yourself)
-
 ```
 
 # Analysis 
@@ -250,12 +245,12 @@ In most of the empirically focused papers we write, the Results section starts o
 
 In this context, I think it is helpful to put **in-line code** into the **text** section of the report (i.e., not in a chunk) so that the results can be, well, contextualized. For example, we could report on the mean sepal width in the `iris` dataframe that is included with R:
 
-* mean sepal width in the `iris` dataframe: `r mean(iris$Sepal.Width)`
+* mean sepal width in the `iris` dataframe: 3.0573333
 
 Sometimes it makes sense to include a code chunk (i.e., not just inline code) here, if needed to make more complex calculations; anything more than a couple of operations is typically best left to a code chunk, and can then be reported on in the text below the code chunk. The chunk below includes code from Loy et al.'s accelerated snowmelt and seed production analysis; the lines of codes included outside of the chunk (in the default Rmarkdown text) are repeated within the chunk (but commented out and thus not evaluated in the chunk). While this is by definition repetitive, it makes it easy for a reader of the Rmarkdown report to see how the calculations were conducted, without having to separately open the .Rmd file.
 
-```{r data overview, eval = F}
 
+```r
 # FIRST THING if altering: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # this code is just an example of one way this could be done; change to best suit the purposes of your project.
@@ -274,7 +269,6 @@ plants.per.treat = masterdat %>% group_by(plot.treat) %>%
 # Total number of seeds
 # * `r as.integer(sum(masterdat$totalseeds))` total seeds
 # "as.integer" makes it so that it does not display in scientific notation
-
 ```
 
 ## Analysis component 1
@@ -294,8 +288,8 @@ Now we move on to the actual data analyses...
 
 In addition, for many if not most analyses, we typically have to do a little bit of additional formatting that isn't in the "data formatting" section above. That is perfectly reasonable and often makes the report easier to follow logically. If you are doing that, however, please be sure to include a little bit of text outlining the formatting changes to be made here.
 
-```{r analysis component 1, eval = F}
 
+```r
 # FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # put any code related to data formatting for an analysis here
@@ -327,7 +321,6 @@ write.csv(out.aov.my.model, file = "results/my-model-results.csv")
 rm(aov.my.model, out.aov.my.model)
 # ...but don't remove your model objects yet, because you need to do model
 # assessment on them (next code chunk)
-
 ```
 
 * after each analysis, **it is really (really) important** to include some text about what the results mean
@@ -339,15 +332,14 @@ rm(aov.my.model, out.aov.my.model)
 
 breaking an analysis down into smaller bits makes sense for many analyses... 
 
-```{r analysis 1 subcomponent 1}
 
+```r
 # this is where you would put your analysis code
 
 # see code chunk above for more specifics!!
 
 # cleanup
 # (always clean up after yourself)
-
 ```
 
 ...but remember for each of those bits to **put some text here** to give some context about the results!
@@ -358,8 +350,8 @@ ALWAYS include data validation: do your data meet the assumptions of the models 
 
 If you ran an analysis two or more alternative ways, you may wish to split the validation component into multiple chunks. Remember to include some explanatory text, usually before and *always* after each chunk, even if very brief.
 
-```{r model validation analysis 1, eval = F}
 
+```r
 # FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # this is where you would put your code for model validation / assessment
@@ -376,7 +368,6 @@ testZeroInflation(sim.out.my.model, plot = F) # print zero-inflation results
 # CLEANUP
 # again, remove anything that isn't subsequently used in the analysis
 rm(sim.out.my.model)
-
 ```
 
 as always, remember for each of those bits to **put some text here** to give some context about the validation results! Just showing a validation plot without any context is unhelpful. Tell the reader / your future self *why* your plot (or other result) is consistent (or not!) with model assumptions.
@@ -397,8 +388,8 @@ as always, remember for each of those bits to **put some text here** to give som
     + if anyone wants to generate the exact saved plots (i.e. the graphics files) that are in the `plots/` subfolder, the code should be set up to be reproducible so that should be straightforward
 
 
-```{r plot analysis 1, eval = F}
 
+```r
 # FIRST THING: CHANGE CODE CHUNK HEADER TO REMOVE `eval = F`!
 
 # any data preparation / summarization needed for plotting
@@ -422,7 +413,6 @@ ggsave(myplot, file = "plots/myplot.pdf", width = 5, height = 3)
 # # remember to also clean up any objects such as data summarizations
 # # set up for your plotting, e.g.:
 rm(myplotdata, myplot)
-
 ```
 
 you may wish to include some brief text here, e.g., "this plot shows the negative overall effect of potassium cyanide exposure on bee survival, underscoring our statistical results"
@@ -445,8 +435,145 @@ These should all occur together, to keep the overall analysis report easy to rea
 
 before `sessionInfo` we print the messages associated with package loading, using the `replay` function from the `evaluate` package. We do this at the end to make the report more readable, such that readers do not have to wade through long lists of (typically) not-very-helpful messages. But for troubleshooting those messages can be important, so they are listed here.
 
-```{r Session Info}
+
+```r
 replay(package.loading.messages)
+```
+
+```
+## > list(c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ), c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ), c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ), c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ), c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ), c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ), c("evaluate", "car", "carData", "broom.mixed", "glmmTMB", 
+## + "kableExtra", "knitr", "forcats", "stringr", "dplyr", "purrr", 
+## + "readr", "tidyr", "tibble", "ggplot2", "tidyverse", "stats", 
+## + "graphics", "grDevices", "utils", "datasets", "methods", "base"
+## + ))
+## [[1]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"       
+## 
+## [[2]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"       
+## 
+## [[3]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"       
+## 
+## [[4]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"       
+## 
+## [[5]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"       
+## 
+## [[6]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"       
+## 
+## [[7]]
+##  [1] "evaluate"    "car"         "carData"     "broom.mixed" "glmmTMB"    
+##  [6] "kableExtra"  "knitr"       "forcats"     "stringr"     "dplyr"      
+## [11] "purrr"       "readr"       "tidyr"       "tibble"      "ggplot2"    
+## [16] "tidyverse"   "stats"       "graphics"    "grDevices"   "utils"      
+## [21] "datasets"    "methods"     "base"
+```
+
+```r
 sessionInfo()
+```
+
+```
+## R version 4.1.1 (2021-08-10)
+## Platform: aarch64-apple-darwin20 (64-bit)
+## Running under: macOS Big Sur 11.6
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] evaluate_0.14     car_3.0-11        carData_3.0-4     broom.mixed_0.2.7
+##  [5] glmmTMB_1.1.2.3   kableExtra_1.3.4  knitr_1.34        forcats_0.5.1    
+##  [9] stringr_1.4.0     dplyr_1.0.7       purrr_0.3.4       readr_2.0.1      
+## [13] tidyr_1.1.3       tibble_3.1.4      ggplot2_3.3.5     tidyverse_1.3.1  
+## 
+## loaded via a namespace (and not attached):
+##  [1] nlme_3.1-153        fs_1.5.0            lubridate_1.7.10   
+##  [4] webshot_0.5.2       httr_1.4.2          numDeriv_2016.8-1.1
+##  [7] tools_4.1.1         TMB_1.7.21          backports_1.2.1    
+## [10] bslib_0.3.0         utf8_1.2.2          R6_2.5.1           
+## [13] DBI_1.1.1           colorspace_2.0-2    withr_2.4.2        
+## [16] tidyselect_1.1.1    emmeans_1.6.3       curl_4.3.2         
+## [19] compiler_4.1.1      cli_3.0.1           rvest_1.0.1        
+## [22] xml2_1.3.2          sandwich_3.0-1      sass_0.4.0         
+## [25] scales_1.1.1        mvtnorm_1.1-2       systemfonts_1.0.2  
+## [28] digest_0.6.27       foreign_0.8-81      minqa_1.2.4        
+## [31] rmarkdown_2.11      svglite_2.0.0       rio_0.5.27         
+## [34] pkgconfig_2.0.3     htmltools_0.5.2     lme4_1.1-27.1      
+## [37] dbplyr_2.1.1        fastmap_1.1.0       rlang_0.4.11       
+## [40] readxl_1.3.1        rstudioapi_0.13     jquerylib_0.1.4    
+## [43] generics_0.1.0      zoo_1.8-9           jsonlite_1.7.2     
+## [46] zip_2.2.0           magrittr_2.0.1      Matrix_1.3-4       
+## [49] Rcpp_1.0.7          munsell_0.5.0       fansi_0.5.0        
+## [52] abind_1.4-5         lifecycle_1.0.0     stringi_1.7.4      
+## [55] multcomp_1.4-17     yaml_2.2.1          MASS_7.3-54        
+## [58] grid_4.1.1          crayon_1.4.1        lattice_0.20-44    
+## [61] haven_2.4.3         splines_4.1.1       hms_1.1.0          
+## [64] pillar_1.6.2        boot_1.3-28         estimability_1.3   
+## [67] codetools_0.2-18    reprex_2.0.1        glue_1.4.2         
+## [70] data.table_1.14.0   modelr_0.1.8        vctrs_0.3.8        
+## [73] nloptr_1.2.2.2      tzdb_0.1.2          cellranger_1.1.0   
+## [76] gtable_0.3.0        assertthat_0.2.1    openxlsx_4.2.4     
+## [79] xfun_0.26           xtable_1.8-4        broom_0.7.9        
+## [82] coda_0.19-4         survival_3.2-13     viridisLite_0.4.0  
+## [85] TH.data_1.0-10      ellipsis_0.3.2
 ```
 
