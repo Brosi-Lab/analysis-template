@@ -78,6 +78,7 @@ give context to your project here. while you don't have to go overboard, it is i
     + load the packages in a single line of code
 * I suggest always including the `tidyverse` and `knitr` packages at a minimum
     + if you load `tidyverse` you don't have to load its subcomponents (`ggplot2`, `dplyr`, `stringr`, etc.)
+    + another one is `evaluate` which allows for saving of package loading messages and then printing them at the end of the report, along with `sessionInfo`; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)
     + I have also included a few other packages that we often use in this list
     + however, you should remove any packages from this list that you don't actually use!!
 * usually, I don't have any text above the code chunk for package loading as it is self explanatory
@@ -115,10 +116,15 @@ give context to your project here. while you don't have to go overboard, it is i
 # CREATE PACKAGE LIST:
 # (ADD / delete the packages you need / don't below!)
 Packages <- c("tidyverse", "knitr", "kableExtra", "glmmTMB", "broom.mixed",
-              "car") 
+              "car", "evaluate") 
 
 # LOAD PACKAGES:
 lapply(Packages, library, character.only = TRUE)
+
+# this saves messages associated with package loading; display at the end
+# `evaluate` package
+package.loading.messages = evaluate(lapply(Packages, library, character.only = TRUE))
+
 
 # # SNAPHOT packages for `renv`
 # # if using renv, then run the line of code below whenever packages change
@@ -432,11 +438,14 @@ These should all occur together, to keep the overall analysis report easy to rea
 
 **IMPORTANT**---always remember to check that every code chunk has a unique name, otherwise your Rmarkdown report will not knit. This is particularly important when copying and pasting code chunks.
 
-# Session Info
+# Session Info and Package Loading Messages
 
-This is key (though minimally) for reproducibility---replicate the code chunk below exactly
+`sessionInfo` is key (though minimally) for reproducibility---replicate the code chunk below exactly
+
+before `sessionInfo` we print the messages associated with package loading, using the `replay` function from the `evaluate` package. We do this at the end to make the report more readable, such that readers do not have to wade through long lists of (typically) not-very-helpful messages. But for troubleshooting those messages can be important, so they are listed here.
 
 ```{r Session Info}
+replay(package.loading.messages)
 sessionInfo()
 ```
 

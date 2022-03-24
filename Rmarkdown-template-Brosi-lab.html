@@ -254,7 +254,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Your Title [must edit]</h1>
 <h4 class="author">Your Name [must edit]</h4>
-<h4 class="date">started [date file was begun, in 12 October 2018 format]; most recent edits 08 March 2022</h4>
+<h4 class="date">started [date file was begun, in 12 October 2018 format]; most recent edits 24 March 2022</h4>
 
 </div>
 
@@ -347,6 +347,7 @@ div.tocify {
 <li>I suggest always including the <code>tidyverse</code> and <code>knitr</code> packages at a minimum
 <ul>
 <li>if you load <code>tidyverse</code> you don’t have to load its subcomponents (<code>ggplot2</code>, <code>dplyr</code>, <code>stringr</code>, etc.)</li>
+<li>another one is <code>evaluate</code> which allows for saving of package loading messages and then printing them at the end of the report, along with <code>sessionInfo</code>; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)</li>
 <li>I have also included a few other packages that we often use in this list</li>
 <li>however, you should remove any packages from this list that you don’t actually use!!</li>
 </ul></li>
@@ -384,7 +385,7 @@ div.tocify {
 <li>if you deactivate <code>renv</code> from a project, but you’ve still kept the lockfile etc., you can reactivate it as well via <code>renv::activate()</code></li>
 </ul></li>
 </ul>
-<pre class="r"><code># IF USING RENV TO MANAGE PACKAGES (highly recommended)
+<pre class="r"><code># IF USING RENV TO MANAGE PACKAGES (recommended)
 # make sure `renv` package is installed: `install.packages(&quot;renv&quot;)`
 # once and only once, call:
 # renv::init()
@@ -394,10 +395,15 @@ div.tocify {
 # CREATE PACKAGE LIST:
 # (ADD / delete the packages you need / don&#39;t below!)
 Packages &lt;- c(&quot;tidyverse&quot;, &quot;knitr&quot;, &quot;kableExtra&quot;, &quot;glmmTMB&quot;, &quot;broom.mixed&quot;,
-              &quot;car&quot;) 
+              &quot;car&quot;, &quot;evaluate&quot;) 
 
 # LOAD PACKAGES:
 lapply(Packages, library, character.only = TRUE)
+
+# this saves messages associated with package loading; display at the end
+# `evaluate` package
+package.loading.messages = evaluate(lapply(Packages, library, character.only = TRUE))
+
 
 # # SNAPHOT packages for `renv`
 # # if using renv, then run the line of code below whenever packages change
@@ -420,7 +426,7 @@ lapply(Packages, library, character.only = TRUE)
 <!-- keep the code below; it prints the packages you used in the Rmarkdown report -->
 <!-- but you probably want to delete these comments :) -->
 <p><strong>Packages used:</strong></p>
-<p>tidyverse, knitr, kableExtra, glmmTMB, broom.mixed, car</p>
+<p>tidyverse, knitr, kableExtra, glmmTMB, broom.mixed, car, evaluate</p>
 </div>
 </div>
 <div id="data" class="section level1" number="4">
@@ -685,9 +691,88 @@ rm(myplotdata, myplot)</code></pre>
 <p><strong>IMPORTANT</strong>—always remember to check that every code chunk has a unique name, otherwise your Rmarkdown report will not knit. This is particularly important when copying and pasting code chunks.</p>
 </div>
 </div>
-<div id="session-info" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Session Info</h1>
-<p>This is key (though minimally) for reproducibility—replicate the code chunk below exactly</p>
+<div id="session-info-and-package-loading-messages" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Session Info and Package Loading Messages</h1>
+<p><code>sessionInfo</code> is key (though minimally) for reproducibility—replicate the code chunk below exactly</p>
+<p>before <code>sessionInfo</code> we print the messages associated with package loading, using the <code>replay</code> function from the <code>evaluate</code> package. We do this at the end to make the report more readable, such that readers do not have to wade through long lists of (typically) not-very-helpful messages. But for troubleshooting those messages can be important, so they are listed here.</p>
+<pre class="r"><code>replay(package.loading.messages)</code></pre>
+<pre><code>## &gt; list(c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ), c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ), c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ), c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ), c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ), c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ), c(&quot;evaluate&quot;, &quot;car&quot;, &quot;carData&quot;, &quot;broom.mixed&quot;, &quot;glmmTMB&quot;, 
+## + &quot;kableExtra&quot;, &quot;knitr&quot;, &quot;forcats&quot;, &quot;stringr&quot;, &quot;dplyr&quot;, &quot;purrr&quot;, 
+## + &quot;readr&quot;, &quot;tidyr&quot;, &quot;tibble&quot;, &quot;ggplot2&quot;, &quot;tidyverse&quot;, &quot;stats&quot;, 
+## + &quot;graphics&quot;, &quot;grDevices&quot;, &quot;utils&quot;, &quot;datasets&quot;, &quot;methods&quot;, &quot;base&quot;
+## + ))
+## [[1]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;       
+## 
+## [[2]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;       
+## 
+## [[3]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;       
+## 
+## [[4]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;       
+## 
+## [[5]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;       
+## 
+## [[6]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;       
+## 
+## [[7]]
+##  [1] &quot;evaluate&quot;    &quot;car&quot;         &quot;carData&quot;     &quot;broom.mixed&quot; &quot;glmmTMB&quot;    
+##  [6] &quot;kableExtra&quot;  &quot;knitr&quot;       &quot;forcats&quot;     &quot;stringr&quot;     &quot;dplyr&quot;      
+## [11] &quot;purrr&quot;       &quot;readr&quot;       &quot;tidyr&quot;       &quot;tibble&quot;      &quot;ggplot2&quot;    
+## [16] &quot;tidyverse&quot;   &quot;stats&quot;       &quot;graphics&quot;    &quot;grDevices&quot;   &quot;utils&quot;      
+## [21] &quot;datasets&quot;    &quot;methods&quot;     &quot;base&quot;</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.1.1 (2021-08-10)
 ## Platform: aarch64-apple-darwin20 (64-bit)
@@ -704,10 +789,10 @@ rm(myplotdata, myplot)</code></pre>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] car_3.0-11        carData_3.0-4     broom.mixed_0.2.7 glmmTMB_1.1.2.3  
-##  [5] kableExtra_1.3.4  knitr_1.34        forcats_0.5.1     stringr_1.4.0    
-##  [9] dplyr_1.0.7       purrr_0.3.4       readr_2.0.1       tidyr_1.1.3      
-## [13] tibble_3.1.4      ggplot2_3.3.5     tidyverse_1.3.1  
+##  [1] evaluate_0.14     car_3.0-11        carData_3.0-4     broom.mixed_0.2.7
+##  [5] glmmTMB_1.1.2.3   kableExtra_1.3.4  knitr_1.34        forcats_0.5.1    
+##  [9] stringr_1.4.0     dplyr_1.0.7       purrr_0.3.4       readr_2.0.1      
+## [13] tidyr_1.1.3       tibble_3.1.4      ggplot2_3.3.5     tidyverse_1.3.1  
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] nlme_3.1-153        fs_1.5.0            lubridate_1.7.10   
@@ -733,12 +818,12 @@ rm(myplotdata, myplot)</code></pre>
 ## [61] haven_2.4.3         splines_4.1.1       hms_1.1.0          
 ## [64] pillar_1.6.2        boot_1.3-28         estimability_1.3   
 ## [67] codetools_0.2-18    reprex_2.0.1        glue_1.4.2         
-## [70] evaluate_0.14       data.table_1.14.0   modelr_0.1.8       
-## [73] vctrs_0.3.8         nloptr_1.2.2.2      tzdb_0.1.2         
-## [76] cellranger_1.1.0    gtable_0.3.0        assertthat_0.2.1   
-## [79] openxlsx_4.2.4      xfun_0.26           xtable_1.8-4       
-## [82] broom_0.7.9         coda_0.19-4         survival_3.2-13    
-## [85] viridisLite_0.4.0   TH.data_1.0-10      ellipsis_0.3.2</code></pre>
+## [70] data.table_1.14.0   modelr_0.1.8        vctrs_0.3.8        
+## [73] nloptr_1.2.2.2      tzdb_0.1.2          cellranger_1.1.0   
+## [76] gtable_0.3.0        assertthat_0.2.1    openxlsx_4.2.4     
+## [79] xfun_0.26           xtable_1.8-4        broom_0.7.9        
+## [82] coda_0.19-4         survival_3.2-13     viridisLite_0.4.0  
+## [85] TH.data_1.0-10      ellipsis_0.3.2</code></pre>
 </div>
 
 
