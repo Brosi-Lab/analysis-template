@@ -125,6 +125,9 @@ Packages <- c("tidyverse", "knitr", "kableExtra", "glmmTMB", "broom.mixed",
 # LOAD PACKAGES:
 lapply(Packages, library, character.only = TRUE)
 
+# SUPPRESS UNHELPFUL `dplyr` MESSAGES: 
+options(dplyr.summarise.inform = FALSE)
+
 # SAVE PACKAGE WARNING MESSAGES
 # this saves messages associated with package loading; display at the end
 # `evaluate` package
