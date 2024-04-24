@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE)
 * the TOC is "floating", i.e. follows the reader as she or he scrolls down in the document, and can be clicked on to change sections
     + this is a HUGE advantage for moving around in a complex analysis quickly and easily
 * it includes "code folding": the code is present in the `html` file but is hidden by default, one clicks on a button that says `code` in order to show it. This helps keep the report document streamlined and easy to scroll through.
-* there is an `html` theme called `cosmo` that this template uses; while typographically more aesthetically pleasing than the default, a more important reason to use it is that the headers are not unreasonably huge. This is particularly important given TOC auto-numbering, wherein you must give top-level headers top-level status and in the default, that leads to unreasonably huge text.
+* there is an `html` theme called `cosmo` that this template uses; while typographically more aesthetically pleasing than the default, a more important reason to use it is that the headers are not unreasonably huge. This is particularly important given TOC auto-numbering, wherein you must give top-level headers top-level status and in the default, that leads to unreasonably huge text IMHO.
     + I have not played around with the themes much, feel free to use one that generates reasonable header sizes (as long as the evil and dreaded Comic Sans font is never, ever, ever used)
 
 ## how to use this file
@@ -53,7 +53,7 @@ while you should *eventually* delete the text in this section from your report, 
     + think about cleanup at the end of every chunk, and keep updating the cleaning!
     + keep an eye on the "Environment" tab in RStudio---if it isn't pretty streamlined, you need to pay more attention to this
 * typically I strive to having one overall "master" dataset and sometimes one dataset per major group of analyses
-    + I almost always remove other components: model ojects, plot objects, etc. etc. unless they are needed downstream in the analysis
+    + I almost always remove other components: model objects, plot objects, etc. etc. unless they are needed downstream in the analysis
     + even then, once they are no longer needed downstream, I will typically remove after they have served their purpose
 * one exception to this is that it can be (very) annoying to have to re-run everything above, say, a particular code chunk to get that code chunk to work again, if you delete some of the previous objects or objects you create in that chunk
     + thus, I often comment out the cleanup section while I am working on a particular chunk
@@ -72,12 +72,12 @@ give context to your project here. while you don't have to go overboard, it is i
 ## package loading
 
 * it is good practice to have a single code chunk at the top of your file that loads ALL packages used anywhere in the analysis. That way, if someone else is trying to replicate your code, they will not get part of the way through and realize they are missing a needed package.
-* it is also good practice to refer to uncommon packages needed for code to run, in the place *where* that code is implemented
-    + this is not particularly important for commonly-used packages like `ggplot2` and (much) more important for less-used packages
+* it is also good practice to refer to uncommon packages needed for code to run, in a comment in the place *where* that code is implemented (but not to load them there, just to comment that function X is from package Y)
+    + this is not particularly important for commonly-used packages like `ggplot2` but is (much) more important for less-used packages
 * a minor pet peeve of mine is the package startup messages that can massively clutter up Rmarkdown reports
-    + I include `message = F, results = F, warning = F` in the code chunk header to get rid of those...
-    + but pay attention to the messages in case there are important warnings or errors; they will appear in this window when the code chunk is run, though not in the .html report
-    + a perhaps better alternative to just paying attention is included here, using the `evaluate` package which allows for saving of messages arising from whatever process you specify (including package loading) and then printing them at the end of the report, along with `sessionInfo`; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)
+    + I include `message = F, results = F, warning = F` in the code chunk header to suppress those messages...
+    + ...but there can be important warnings or errors; they will appear in this window when the code chunk is run, though not in the .html report
+    + the "best of both worlds" approach included here uses the `evaluate` package which allows for saving of messages arising from whatever process you specify (including package loading) and then printing them at the **end** of the report, along with `sessionInfo`; this keeps your report clean and streamlined, while preserving that information which can be useful for troubleshooting (though typically that is rare)
 * the code in the chunk below allows you to:
     + make a list of all the packages you want / need for your Rmarkdown file
     + load the packages in a single line of code
@@ -108,7 +108,7 @@ give context to your project here. while you don't have to go overboard, it is i
     + if you deactivate `renv` from a project, but you've still kept the lockfile etc., you can reactivate it as well via `renv::activate()` 
 
 
-```{r packages, message = F, results = F, warning = F}
+```{r packages, message=FALSE, warning=FALSE, results=F}
 
 # IF USING RENV TO MANAGE PACKAGES (recommended)
 # make sure `renv` package is installed: `install.packages("renv")`
